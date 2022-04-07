@@ -1,4 +1,12 @@
 #board {
+    position: relative;
     background-color: rgb(124, 255, 200);
     height: 100vh;
+}
+
+.player {
+    position: absolute;
+    background-color: rgb(255, 20, 196);
+    height: 20px;
+    width: 120px;
 }
