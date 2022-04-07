@@ -1,0 +1,4 @@
+#board {
+    background-color: rgb(131, 255, 224);
+    height: 100vh;
+}
