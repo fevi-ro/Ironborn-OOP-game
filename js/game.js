@@ -1,8 +1,10 @@
 class Game {
     constructor(create, draw) {
+        this.time = 0;
         this.player = null;
         this.create = create;
         this.draw = draw;
+        this.obstacles = [];
     }
 
     start() {
@@ -12,17 +14,32 @@ class Game {
         this.draw(this.player);
 
 
-        this.obstacle = new Obstacle();
-        this.obstacle.domElement = this.create("obstacle");
-        this.draw(this.obstacle);
-
         setInterval(() => {
-            // move obstacle
-            this.obstacle.moveDown();
-            this.draw(this.obstacle);
-        }, 150);
+
+            //make obstacles move
+            this.obstacles.forEach((obstacle) => {
+                obstacle.moveDown();
+                this.draw(obstacle);
+            })
+
+
+            // create and draw obstacles
+            if (this.time % 30 === 0) {
+                const newObstacle = new Obstacle();
+                newObstacle.domElement = this.create("obstacle");
+                this.obstacles.push(newObstacle);
+
+
+            }
+            this.time++
+
+        }, 100);
+
+
 
     }
+
+
 
     movePlayer(direction) {
         if (direction === "left") {
