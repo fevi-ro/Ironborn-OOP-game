@@ -9,8 +9,7 @@ function createDomElement(className) {
 }
 
 function drawDomElement(instance) {
-    console.log("the element to paint is... ", instance.domElement)
-    console.log("new horizontal position will be... ", instance.positionX)
+
 
     instance.domElement.style.left = instance.positionX + "%";
     instance.domElement.style.bottom = instance.positionY + "%";
