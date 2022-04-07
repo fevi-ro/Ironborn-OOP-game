@@ -10,6 +10,18 @@ class Game {
         this.player.domElement = this.create('player');
         //create a dom element with the class "player"
         this.draw(this.player);
+
+
+        this.obstacle = new Obstacle();
+        this.obstacle.domElement = this.create("obstacle");
+        this.draw(this.obstacle);
+
+        setInterval(() => {
+            // move obstacle
+            this.obstacle.moveDown();
+            this.draw(this.obstacle);
+        }, 150);
+
     }
 
     movePlayer(direction) {
@@ -43,5 +55,18 @@ class Player {
     moveRight() {
         this.positionX++;
         //test if works --> console.log(`moving right... ${this.positionX}`)
+    }
+}
+
+
+class Obstacle {
+    constructor() {
+        this.positionX = 47;
+        this.positionY = 100;
+        this.domElement = null;
+    }
+
+    moveDown() {
+        this.positionY--;
     }
 }
