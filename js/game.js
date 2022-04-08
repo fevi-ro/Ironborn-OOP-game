@@ -15,12 +15,15 @@ class Game {
         this.draw(this.player);
 
         setInterval(() => {
-
+            this.time++;
             // move obstacles
             this.obstacles.forEach((obstacle) => {
                 obstacle.moveDown();
                 this.draw(obstacle);
                 this.detectCollision(obstacle);
+                this.detectObstacleOutside(obstacle);
+                this.detectPlayerOutside(Player);
+
             });
 
             // create & draw an obstacles
@@ -28,11 +31,12 @@ class Game {
                 const newObstacle = new Obstacle();
                 newObstacle.domElement = this.create("obstacle");
                 this.obstacles.push(newObstacle);
+
             }
 
-            this.time++;
 
-        }, 50);
+
+        }, 20);
     }
 
     detectCollision(obstacle) {
@@ -42,8 +46,29 @@ class Game {
             this.player.height + this.player.positionY > obstacle.positionY) {
 
             alert("Game over!!!!!");
+
+        }
+
+
+    }
+
+    detectObstacleOutside(obstacle) {
+        if (obstacle.positionY < 0) {
+            this.obstacles.shift()
+
+            obstacle.domElement.remove(obstacle);
         }
     }
+
+    detectPlayerOutside(player) {
+        if (player.positionX < 0) {
+            this.player.shift()
+
+            player.domElement.remove(Player);
+        }
+
+    }
+
 
     movePlayer(direction) {
         if (direction === "left") {
@@ -77,13 +102,16 @@ class Player {
 
 class Obstacle {
     constructor() {
-        this.positionX = 50;
+        this.positionX = Math.floor(Math.random() * 80)
         this.positionY = 100;
         this.width = 10;
         this.height = 10;
         this.domElement = null;
+
     }
     moveDown() {
         this.positionY--;
     }
+
+
 }
