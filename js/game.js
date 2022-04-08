@@ -2,7 +2,7 @@ class Game {
     constructor(create, draw) {
         this.time = 0;
         this.player = null;
-        this.obstacles = [];
+        this.obstacles = []; // array of instances of the class Obstacle
         this.create = create;
         this.draw = draw;
     }
@@ -15,15 +15,13 @@ class Game {
         this.draw(this.player);
 
         setInterval(() => {
-            this.time++;
+
             // move obstacles
             this.obstacles.forEach((obstacle) => {
                 obstacle.moveDown();
                 this.draw(obstacle);
                 this.detectCollision(obstacle);
                 this.detectObstacleOutside(obstacle);
-                this.detectPlayerOutside(Player);
-
             });
 
             // create & draw an obstacles
@@ -31,12 +29,11 @@ class Game {
                 const newObstacle = new Obstacle();
                 newObstacle.domElement = this.create("obstacle");
                 this.obstacles.push(newObstacle);
-
             }
 
+            this.time++;
 
-
-        }, 20);
+        }, 50);
     }
 
     detectCollision(obstacle) {
@@ -44,31 +41,16 @@ class Game {
             this.player.positionX + this.player.width > obstacle.positionX &&
             this.player.positionY < obstacle.positionY + obstacle.height &&
             this.player.height + this.player.positionY > obstacle.positionY) {
-
-            alert("Game over!!!!!");
-
+            console.log("game over")
         }
-
-
     }
 
     detectObstacleOutside(obstacle) {
         if (obstacle.positionY < 0) {
-            this.obstacles.shift()
-
-            obstacle.domElement.remove(obstacle);
+            this.obstacles.shift(); // remove from array
+            obstacle.domElement.remove(); // remove from the dom
         }
     }
-
-    detectPlayerOutside(player) {
-        if (player.positionX < 0) {
-            this.player.shift()
-
-            player.domElement.remove(Player);
-        }
-
-    }
-
 
     movePlayer(direction) {
         if (direction === "left") {
@@ -78,15 +60,18 @@ class Game {
         }
         this.draw(this.player);
     }
+
+
+
 }
 
 
 class Player {
     constructor() {
-        this.positionX = 50;
-        this.positionY = 0;
         this.width = 10;
         this.height = 10;
+        this.positionX = 50;
+        this.positionY = 0;
         this.domElement = null;
     }
 
@@ -102,16 +87,13 @@ class Player {
 
 class Obstacle {
     constructor() {
-        this.positionX = Math.floor(Math.random() * 80)
-        this.positionY = 100;
         this.width = 10;
         this.height = 10;
+        this.positionX = Math.floor(Math.random() * 80)
+        this.positionY = 100;
         this.domElement = null;
-
     }
     moveDown() {
         this.positionY--;
     }
-
-
 }
