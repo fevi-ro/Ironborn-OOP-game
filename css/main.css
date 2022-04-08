@@ -2,7 +2,6 @@
     position: relative;
     background-color: rgb(124, 255, 200);
     height: 100vh;
-    max-width: 100%;
 }
 
 .player {
@@ -17,4 +16,9 @@
     background-color: rgb(255, 251, 0);
     /* height: 20px;
     width: 120px; */
+}
+
+.bullet {
+    position: absolute;
+    background-color: black;
 }

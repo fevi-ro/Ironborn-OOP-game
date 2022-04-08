@@ -2,9 +2,10 @@ class Game {
     constructor(create, draw) {
         this.time = 0;
         this.player = null;
-        this.obstacles = []; // array of instances of the class Obstacle
+        this.obstacles = [];
         this.create = create;
         this.draw = draw;
+        this.bullets = [];
     }
 
     start() {
@@ -14,14 +15,23 @@ class Game {
         this.player.domElement = this.create("player"); //create a dom element with the class "player"
         this.draw(this.player);
 
-        setInterval(() => {
+        //create & draw bullets
+        this.bullet = new Bullet();
+        this.bullet.domElement = this.create("bullet");
+        this.draw(this.bullet);
+        this.bullets.push(this.bullet);
 
+
+        setInterval(() => {
+            this.time++;
             // move obstacles
             this.obstacles.forEach((obstacle) => {
                 obstacle.moveDown();
                 this.draw(obstacle);
                 this.detectCollision(obstacle);
                 this.detectObstacleOutside(obstacle);
+
+
             });
 
             // create & draw an obstacles
@@ -29,11 +39,15 @@ class Game {
                 const newObstacle = new Obstacle();
                 newObstacle.domElement = this.create("obstacle");
                 this.obstacles.push(newObstacle);
+
             }
 
-            this.time++;
 
-        }, 50);
+
+        }, 20);
+
+
+
     }
 
     detectCollision(obstacle) {
@@ -41,16 +55,25 @@ class Game {
             this.player.positionX + this.player.width > obstacle.positionX &&
             this.player.positionY < obstacle.positionY + obstacle.height &&
             this.player.height + this.player.positionY > obstacle.positionY) {
-            console.log("game over")
+
+            alert("Game over!!!!!");
+
         }
+
     }
 
     detectObstacleOutside(obstacle) {
         if (obstacle.positionY < 0) {
-            this.obstacles.shift(); // remove from array
-            obstacle.domElement.remove(); // remove from the dom
+            this.obstacles.shift()
+
+            obstacle.domElement.remove(obstacle);
         }
     }
+
+
+
+
+
 
     movePlayer(direction) {
         if (direction === "left") {
@@ -61,17 +84,23 @@ class Game {
         this.draw(this.player);
     }
 
-
-
+    moveBullet(direction) {
+        if (direction === "left") {
+            this.bullet.moveLeft();
+        } else if (direction === "right") {
+            this.bullet.moveRight();
+        }
+        this.draw(this.bullet);
+    }
 }
 
 
 class Player {
     constructor() {
-        this.width = 10;
-        this.height = 10;
         this.positionX = 50;
         this.positionY = 0;
+        this.width = 10;
+        this.height = 10;
         this.domElement = null;
     }
 
@@ -87,13 +116,32 @@ class Player {
 
 class Obstacle {
     constructor() {
-        this.width = 10;
-        this.height = 10;
         this.positionX = Math.floor(Math.random() * 80)
         this.positionY = 100;
+        this.width = 10;
+        this.height = 10;
         this.domElement = null;
+
     }
     moveDown() {
         this.positionY--;
+    }
+
+}
+
+
+class Bullet extends Player {
+    constructor() {
+        super();
+        this.width = 3;
+        this.height = 3;
+    }
+
+    moveLeft() {
+        this.positionX--;
+    }
+
+    moveRight() {
+        this.positionX++;
     }
 }
