@@ -28,9 +28,14 @@ document.addEventListener("keydown", function(event) {
     switch (event.key) {
         case "ArrowRight":
             game.movePlayer("right");
+
             break;
         case "ArrowLeft":
             game.movePlayer("left");
+
             break;
+        case " ":
+            game.shootBullets()
+            break
     }
 });
